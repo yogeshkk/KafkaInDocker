@@ -1,0 +1,144 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zoo
+spec:
+  selector:
+    name: zookeeper
+  clusterIP: None
+  ports:
+  - name: zoo # Actually, no port is needed.
+    port: 2181
+    targetPort: 2181
+---    
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zookeeper1
+  labels:
+    name: zookeeper
+spec:
+  hostname: zookeeper1
+  subdomain: zoo
+  containers:
+  - image: yogeshkunjir/kafka
+    imagePullPolicy: IfNotPresent
+    name: zoo1
+    env:
+    - name: mode
+      value: "zookeeper"
+    - name: zookeeper_id
+      value: "1"
+    - name: zookeeper_node
+      value: "zookeeper1.zoo.default.svc.cluster.local:2181,zookeeper2.zoo.default.svc.cluster.local:2181,zookeeper3.zoo.default.svc.cluster.local:2181"
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zookeeper2
+  labels:
+    name: zookeeper
+spec:
+  hostname :  zookeeper2
+  subdomain: zoo
+  containers:
+  - image: yogeshkunjir/kafka
+    imagePullPolicy: IfNotPresent
+    name: zoo2
+    env:
+    - name: mode
+      value: "zookeeper"
+    - name: zookeeper_id
+      value: "2"
+    - name: zookeeper_node
+      value: "zookeeper1.zoo.default.svc.cluster.local:2181,zookeeper2.zoo.default.svc.cluster.local:2181,zookeeper3.zoo.default.svc.cluster.local:2181"
+  restartPolicy: Always
+---  
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zookeeper3
+  labels:
+    name: zookeeper
+spec:
+  hostname :  zookeeper3
+  subdomain: zoo
+  containers:
+  - image: yogeshkunjir/kafka
+    imagePullPolicy: IfNotPresent
+    name: zoo3
+    env:
+    - name: mode
+      value: "zookeeper"
+    - name: zookeeper_id
+      value: "3"
+    - name: zookeeper_node
+      value: "zookeeper1.zoo.default.svc.cluster.local:2181,zookeeper2.zoo.default.svc.cluster.local:2181,zookeeper3.zoo.default.svc.cluster.local:2181"
+  restartPolicy: Always
+---  
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kafka1
+  labels:
+    name: kafka
+spec:
+  hostname :  kafka1
+  subdomain: kafka
+  containers:
+  - image: yogeshkunjir/kafka
+    imagePullPolicy: IfNotPresent
+    name: kafka1
+    env:
+    - name: mode
+      value: "kafka"
+    - name: broker_id
+      value: "1"
+    - name: zookeeper_node
+      value: "zookeeper1.zoo.default.svc.cluster.local:2181,zookeeper2.zoo.default.svc.cluster.local:2181,zookeeper3.zoo.default.svc.cluster.local:2181"
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kafka2
+  labels:
+    name: kafka
+spec:
+  hostname :  kafka2
+  subdomain: kafka
+  containers:
+  - image: yogeshkunjir/kafka
+    imagePullPolicy: IfNotPresent
+    name: kafka2
+    env:
+    - name: mode
+      value: "kafka"
+    - name: broker_id
+      value: "2"
+    - name: zookeeper_node
+      value: "zookeeper1.zoo.default.svc.cluster.local:2181,zookeeper2.zoo.default.svc.cluster.local:2181,zookeeper3.zoo.default.svc.cluster.local:2181"
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kafka3
+  labels:
+    name: kafka
+spec:
+  hostname :  kafka3
+  subdomain: kafka
+  containers:
+  - image: yogeshkunjir/kafka
+    imagePullPolicy: IfNotPresent
+    name: kafka3
+    env:
+    - name: mode
+      value: "kafka"
+    - name: broker_id
+      value: "3"
+    - name: zookeeper_node
+      value: "zookeeper1.zoo.default.svc.cluster.local:2181,zookeeper2.zoo.default.svc.cluster.local:2181,zookeeper3.zoo.default.svc.cluster.local:2181"
+  restartPolicy: Always
